@@ -20,7 +20,9 @@ package org.apache.ambari.server.controller;
 
 
 import java.io.File;
+
 import javax.crypto.BadPaddingException;
+
 import java.net.BindException;
 import java.util.Map;
 
@@ -61,6 +63,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
@@ -189,6 +192,8 @@ public class AmbariServer {
 
       agentroot.addFilter(SecurityFilter.class, "/*", 1);
 
+      root.addFilter( new FilterHolder(CrossOriginFilter.class), "/*", 1);
+      
       if (configs.getApiAuthentication()) {
         root.addFilter(new FilterHolder(springSecurityFilter), "/api/*", 1);
       }
